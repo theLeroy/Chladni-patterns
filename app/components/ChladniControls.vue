@@ -50,18 +50,22 @@ const setAspectMode = (mode: AspectMode): void => {
 
 <template>
   <section
-    class="panel"
-    :class="{ 'panel--collapsed': !isOpen }"
+    class="flex max-h-[calc(100dvh-3rem)] w-[17.5rem] flex-col overflow-hidden rounded-xl border border-hairline bg-panel shadow-panel backdrop-blur-[12px] max-md:max-h-[60dvh] max-md:w-full"
     aria-label="Simulation controls"
   >
-    <header class="panel__head">
-      <div class="panel__title">
-        <h2>Controls</h2>
-        <span class="panel__meta">{{ fpsLabel }}</span>
+    <header
+      class="flex items-center justify-between gap-3 px-3.5 py-3"
+      :class="isOpen ? 'border-b border-hairline' : ''"
+    >
+      <div class="flex min-w-0 items-baseline gap-2">
+        <h2 class="text-[0.8125rem] font-semibold tracking-[0.04em] text-ink uppercase">
+          Controls
+        </h2>
+        <span class="text-[0.6875rem] text-muted tabular-nums">{{ fpsLabel }}</span>
       </div>
       <button
         type="button"
-        class="panel__toggle"
+        class="shrink-0 cursor-pointer rounded border-none bg-transparent px-1 py-0.5 text-xs text-accent-ink hover:bg-accent-wash"
         :aria-expanded="isOpen"
         @click="isOpen = !isOpen"
       >
@@ -71,10 +75,10 @@ const setAspectMode = (mode: AspectMode): void => {
 
     <div
       v-show="isOpen"
-      class="panel__body"
+      class="flex flex-col gap-4 overflow-y-auto p-3.5"
     >
-      <fieldset class="group">
-        <legend class="group__legend">
+      <fieldset class="flex flex-col gap-3">
+        <legend class="mb-0.5 p-0 text-[0.625rem] font-[650] tracking-[0.08em] text-muted uppercase">
           Vibration
         </legend>
 
@@ -108,8 +112,8 @@ const setAspectMode = (mode: AspectMode): void => {
         />
       </fieldset>
 
-      <fieldset class="group">
-        <legend class="group__legend">
+      <fieldset class="flex flex-col gap-3">
+        <legend class="mb-0.5 p-0 text-[0.625rem] font-[650] tracking-[0.08em] text-muted uppercase">
           Sand
         </legend>
 
@@ -129,17 +133,19 @@ const setAspectMode = (mode: AspectMode): void => {
         />
       </fieldset>
 
-      <fieldset class="group">
-        <legend class="group__legend">
+      <fieldset class="flex flex-col gap-3">
+        <legend class="mb-0.5 p-0 text-[0.625rem] font-[650] tracking-[0.08em] text-muted uppercase">
           Patterns
         </legend>
-        <div class="chips">
+        <div class="flex flex-wrap gap-1.5">
           <button
             v-for="preset in PRESETS"
             :key="preset.id"
             type="button"
-            class="chip"
-            :class="{ 'chip--active': preset.id === activePresetId }"
+            class="cursor-pointer rounded-full border px-2.5 py-1 text-xs transition-colors duration-[120ms] motion-reduce:transition-none"
+            :class="preset.id === activePresetId
+              ? 'border-accent bg-accent text-on-accent'
+              : 'border-hairline bg-transparent text-ink hover:border-accent'"
             :aria-pressed="preset.id === activePresetId"
             @click="applyPreset(preset.params)"
           >
@@ -148,17 +154,19 @@ const setAspectMode = (mode: AspectMode): void => {
         </div>
       </fieldset>
 
-      <fieldset class="group">
-        <legend class="group__legend">
+      <fieldset class="flex flex-col gap-3">
+        <legend class="mb-0.5 p-0 text-[0.625rem] font-[650] tracking-[0.08em] text-muted uppercase">
           Aspect
         </legend>
-        <div class="chips">
+        <div class="flex flex-wrap gap-1.5">
           <button
             v-for="mode in aspectModes"
             :key="mode.value"
             type="button"
-            class="chip"
-            :class="{ 'chip--active': mode.value === render.aspectMode }"
+            class="cursor-pointer rounded-full border px-2.5 py-1 text-xs transition-colors duration-[120ms] motion-reduce:transition-none"
+            :class="mode.value === render.aspectMode
+              ? 'border-accent bg-accent text-on-accent'
+              : 'border-hairline bg-transparent text-ink hover:border-accent'"
             :aria-pressed="mode.value === render.aspectMode"
             @click="setAspectMode(mode.value)"
           >
@@ -167,17 +175,17 @@ const setAspectMode = (mode: AspectMode): void => {
         </div>
       </fieldset>
 
-      <div class="actions">
+      <div class="flex gap-2">
         <button
           type="button"
-          class="button"
+          class="flex-1 cursor-pointer rounded-lg border border-accent bg-accent px-3 py-[0.4375rem] text-[0.8125rem] font-[550] text-on-accent transition-[filter] duration-[120ms] hover:brightness-[0.94] motion-reduce:transition-none"
           @click="paused = !paused"
         >
           {{ paused ? 'Resume' : 'Pause' }}
         </button>
         <button
           type="button"
-          class="button button--ghost"
+          class="flex-1 cursor-pointer rounded-lg border border-hairline bg-transparent px-3 py-[0.4375rem] text-[0.8125rem] font-[550] text-ink transition-colors duration-[120ms] hover:border-accent motion-reduce:transition-none"
           @click="emit('scatter')"
         >
           Scatter
@@ -186,172 +194,3 @@ const setAspectMode = (mode: AspectMode): void => {
     </div>
   </section>
 </template>
-
-<style scoped>
-.panel {
-  display: flex;
-  flex-direction: column;
-  width: 17.5rem;
-  max-height: calc(100dvh - 3rem);
-  border: 1px solid var(--color-hairline);
-  border-radius: 0.75rem;
-  background: var(--color-panel);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 12px 32px -12px rgb(0 0 0 / 0.22);
-  overflow: hidden;
-}
-
-.panel__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.75rem 0.875rem;
-  border-bottom: 1px solid var(--color-hairline);
-}
-
-.panel--collapsed .panel__head {
-  border-bottom: none;
-}
-
-.panel__title {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  min-width: 0;
-}
-
-.panel__title h2 {
-  margin: 0;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--color-ink);
-}
-
-.panel__meta {
-  font-size: 0.6875rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--color-muted);
-}
-
-.panel__toggle {
-  flex-shrink: 0;
-  border: none;
-  background: none;
-  padding: 0.125rem 0.25rem;
-  font: inherit;
-  font-size: 0.75rem;
-  color: var(--color-accent-ink);
-  cursor: pointer;
-  border-radius: 0.25rem;
-}
-
-.panel__toggle:hover {
-  background: var(--color-accent-wash);
-}
-
-.panel__body {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 0.875rem;
-  overflow-y: auto;
-}
-
-.group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin: 0;
-  padding: 0;
-  border: none;
-}
-
-.group__legend {
-  padding: 0;
-  margin-bottom: 0.125rem;
-  font-size: 0.625rem;
-  font-weight: 650;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-}
-
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.375rem;
-}
-
-.chip {
-  border: 1px solid var(--color-hairline);
-  border-radius: 999px;
-  padding: 0.25rem 0.625rem;
-  font: inherit;
-  font-size: 0.75rem;
-  color: var(--color-ink);
-  background: transparent;
-  cursor: pointer;
-  transition: background-color 120ms ease, border-color 120ms ease;
-}
-
-.chip:hover {
-  border-color: var(--color-accent);
-}
-
-.chip--active {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: var(--color-on-accent);
-}
-
-.actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.button {
-  flex: 1;
-  border: 1px solid var(--color-accent);
-  border-radius: 0.5rem;
-  padding: 0.4375rem 0.75rem;
-  font: inherit;
-  font-size: 0.8125rem;
-  font-weight: 550;
-  color: var(--color-on-accent);
-  background: var(--color-accent);
-  cursor: pointer;
-  transition: filter 120ms ease;
-}
-
-.button:hover {
-  filter: brightness(0.94);
-}
-
-.button--ghost {
-  color: var(--color-ink);
-  background: transparent;
-  border-color: var(--color-hairline);
-}
-
-.button--ghost:hover {
-  border-color: var(--color-accent);
-  filter: none;
-}
-
-@media (max-width: 48rem) {
-  .panel {
-    width: 100%;
-    max-height: 60dvh;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .chip,
-  .button {
-    transition: none;
-  }
-}
-</style>

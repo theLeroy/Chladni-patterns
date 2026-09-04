@@ -1,3 +1,5 @@
+import tailwindcss from '@tailwindcss/vite'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: ['@nuxt/eslint'],
@@ -18,6 +20,9 @@ export default defineNuxtConfig({
     port: 43117,
   },
   compatibilityDate: '2025-07-15',
+  vite: {
+    plugins: [tailwindcss()],
+  },
   // Otherwise a first `pnpm dev` blocks on an interactive consent prompt.
   telemetry: false,
   eslint: {

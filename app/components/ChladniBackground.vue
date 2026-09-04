@@ -143,35 +143,21 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
+  <!-- Decoration only: never intercept clicks meant for the page. -->
   <div
     ref="root"
-    class="chladni"
+    class="pointer-events-none fixed inset-0 z-0"
     aria-hidden="true"
   >
+    <!--
+      The canvas' backing store is smaller than its display size, and the
+      browser upscales it. Sand is high-frequency detail, so the softening is
+      invisible, while the frame cost stays fixed no matter how large the
+      viewport gets.
+    -->
     <canvas
       ref="canvas"
-      class="chladni__canvas"
+      class="block size-full"
     />
   </div>
 </template>
-
-<style scoped>
-.chladni {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  /* Decoration only: never intercept clicks meant for the page. */
-  pointer-events: none;
-}
-
-/*
- * The canvas' backing store is smaller than its display size, and the browser
- * upscales it. Sand is high-frequency detail, so the softening is invisible,
- * while the frame cost stays fixed no matter how large the viewport gets.
- */
-.chladni__canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-</style>
