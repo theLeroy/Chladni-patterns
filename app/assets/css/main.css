@@ -1,0 +1,54 @@
+:root {
+    /* The plate. The canvas is transparent, so this is what shows between grains. */
+    --color-surface: #e5e5e5;
+    /* The sand. */
+    --color-accent: #ff8a3d;
+  
+    --color-on-accent: #341804;
+    --color-accent-ink: #9c440a;
+    --color-accent-wash: rgb(255 138 61 / 0.18);
+  
+    --color-ink: #1a1a19;
+    --color-muted: #6d6a66;
+    --color-hairline: rgb(26 26 25 / 0.14);
+    --color-track: rgb(26 26 25 / 0.14);
+    --color-panel: rgb(238 238 238 / 0.78);
+  
+    --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+      "Liberation Mono", monospace;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  
+  body {
+    margin: 0;
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  h1,
+  h2,
+  h3,
+  p {
+    margin: 0;
+  }
+  
+  :focus-visible {
+    outline: 2px solid var(--color-accent-ink);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+  
