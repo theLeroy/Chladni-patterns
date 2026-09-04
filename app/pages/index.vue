@@ -35,22 +35,46 @@ useHead({
       @fps="fps = $event"
     />
 
-    <main class="page">
-      <section class="hero">
-        <article class="card">
-          <p class="eyebrow">
+    <main class="relative z-[1] px-6">
+      <section class="mx-auto px-[5svw] h-screen flex flex-col justify-center items-center text-center text-[2.2svw] gap-2 text-ink-slightly-muted font-bold">
+        <h3
+          class="fade-in-up"
+          style="animation-delay: 1s;"
+        >
+          Sometimes the frequencies just matches
+        </h3>
+        <h3
+          class="fade-in-up"
+          style="animation-delay: 2.5s;"
+        >
+          so beautiful patterns emerge.
+        </h3>
+      </section>
+      <section class="flex min-h-dvh max-w-[46rem] items-center">
+        <!--
+          The grain is high-frequency detail and text sitting directly on it is
+          tiring to read. A translucent, blurred plate keeps the pattern visible
+          behind the words without competing with them.
+        -->
+        <article
+          class="rounded-2xl border border-hairline bg-panel p-[clamp(1.5rem,4vw,2.75rem)] shadow-card backdrop-blur-[16px] backdrop-saturate-[1.1]"
+        >
+          <h3 class="text-[1.17em] font-bold">
+            sometimes the frequency just matches
+          </h3>
+          <p class="text-[0.6875rem] font-[650] tracking-[0.14em] text-accent-ink uppercase">
             Standing waves
           </p>
-          <h1 class="title">
+          <h1 class="mt-2 text-[clamp(2.25rem,7vw,4rem)] font-semibold leading-[1.02] tracking-[-0.03em]">
             Chladni patterns
           </h1>
-          <p class="lede">
+          <p class="mt-5 max-w-[34rem] text-[clamp(1rem,2vw,1.1875rem)] text-ink">
             Drive a metal plate at the right frequency and the sand on top of it stops
             moving randomly. It drains off the parts that vibrate and settles along the
             nodal lines, where the plate is standing still. Every grain behind this text
             is doing exactly that, sixty times a second.
           </p>
-          <p class="body">
+          <p class="mt-4 max-w-[34rem] text-[0.9375rem] text-muted">
             Drag the frequency sliders and watch the figure reorganise itself. Nothing
             here is drawn: there is no path, no shape and no image. There are sixty
             thousand particles taking random steps, and the only rule is that a grain
@@ -59,28 +83,32 @@ useHead({
         </article>
       </section>
 
-      <section class="hero hero--secondary">
-        <article class="card card--narrow">
-          <h2 class="subtitle">
+      <section class="flex max-w-[46rem] items-center pb-24 max-md:pb-[60dvh]">
+        <article
+          class="max-w-xl rounded-2xl border border-hairline bg-panel p-[clamp(1.5rem,4vw,2.75rem)] shadow-card backdrop-blur-[16px] backdrop-saturate-[1.1]"
+        >
+          <h2 class="text-[clamp(1.25rem,3vw,1.75rem)] font-semibold tracking-[-0.02em]">
             How it works
           </h2>
-          <p class="body">
+          <p class="mt-4 max-w-[34rem] text-[0.9375rem] text-muted">
             The plate's displacement at any point is the sum of two vibration modes,
             which has a closed form for a square plate:
           </p>
-          <pre class="formula"><code>f(x, y) = a · sin(πnx) · sin(πmy)
+          <pre
+            class="mt-4 overflow-x-auto rounded-r-md border-l-2 border-accent bg-ink/4 px-4 py-3.5 font-mono text-[0.8125rem] leading-normal text-ink"
+          ><code>f(x, y) = a · sin(πnx) · sin(πmy)
         + b · sin(πmx) · sin(πny)</code></pre>
-          <p class="body">
-            Sand comes to rest where <code class="inline">f</code> is zero. Rather than
+          <p class="mt-4 max-w-[34rem] text-[0.9375rem] text-muted">
+            Sand comes to rest where <code class="inline-code">f</code> is zero. Rather than
             solve for those curves, each particle takes a random step whose length is
-            proportional to <code class="inline">|f|</code> at its own position. Grains
+            proportional to <code class="inline-code">|f|</code> at its own position. Grains
             over a violently vibrating region get thrown around and never settle; grains
             that wander onto a nodal line have almost nowhere left to go, so they stay.
             The pattern is not computed, it accumulates.
           </p>
-          <p class="body">
-            The <strong>Frequency</strong> sliders are <code class="inline">m</code> and
-            <code class="inline">n</code> above, and <strong>Strength</strong> is how hard
+          <p class="mt-4 max-w-[34rem] text-[0.9375rem] text-muted">
+            The <strong>Frequency</strong> sliders are <code class="inline-code">m</code> and
+            <code class="inline-code">n</code> above, and <strong>Strength</strong> is how hard
             the plate is driven. Fractional frequencies are not physically reachable on a
             real plate, which is precisely why they look the way they do.
           </p>
@@ -88,7 +116,7 @@ useHead({
       </section>
     </main>
 
-    <div class="dock">
+    <div class="fixed top-6 right-6 z-[2] max-md:inset-x-0 max-md:top-auto max-md:bottom-0">
       <ChladniControls
         v-model:params="params"
         v-model:render="render"
@@ -101,117 +129,26 @@ useHead({
 </template>
 
 <style scoped>
-.page {
-  position: relative;
-  z-index: 1;
-  padding: 0 1.5rem;
+.fade-in-up {
+  animation-name: fade-in-up;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+  opacity: 0;
+  transform: translateY(100px);
+  filter: blur(200px);
 }
 
-.hero {
-  display: flex;
-  align-items: center;
-  min-height: 100dvh;
-  max-width: 46rem;
-}
-
-.hero--secondary {
-  min-height: auto;
-  padding-bottom: 6rem;
-}
-
-/*
- * The grain is high-frequency detail and text sitting directly on it is tiring
- * to read. A translucent, blurred plate keeps the pattern visible behind the
- * words without competing with them.
- */
-.card {
-  padding: clamp(1.5rem, 4vw, 2.75rem);
-  border: 1px solid var(--color-hairline);
-  border-radius: 1rem;
-  background: var(--color-panel);
-  backdrop-filter: blur(16px) saturate(1.1);
-  box-shadow: 0 24px 48px -32px rgb(0 0 0 / 0.35);
-}
-
-.card--narrow {
-  max-width: 36rem;
-}
-
-.eyebrow {
-  font-size: 0.6875rem;
-  font-weight: 650;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-accent-ink);
-}
-
-.title {
-  margin-top: 0.5rem;
-  font-size: clamp(2.25rem, 7vw, 4rem);
-  font-weight: 600;
-  line-height: 1.02;
-  letter-spacing: -0.03em;
-}
-
-.subtitle {
-  font-size: clamp(1.25rem, 3vw, 1.75rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-
-.lede {
-  margin-top: 1.25rem;
-  font-size: clamp(1rem, 2vw, 1.1875rem);
-  color: var(--color-ink);
-  max-width: 34rem;
-}
-
-.body {
-  margin-top: 1rem;
-  font-size: 0.9375rem;
-  color: var(--color-muted);
-  max-width: 34rem;
-}
-
-.formula {
-  margin: 1rem 0 0;
-  padding: 0.875rem 1rem;
-  overflow-x: auto;
-  border-left: 2px solid var(--color-accent);
-  border-radius: 0 0.375rem 0.375rem 0;
-  background: rgb(26 26 25 / 0.04);
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  color: var(--color-ink);
-}
-
-.inline {
-  padding: 0.0625rem 0.25rem;
-  border-radius: 0.1875rem;
-  background: var(--color-accent-wash);
-  font-family: var(--font-mono);
-  font-size: 0.875em;
-  color: var(--color-accent-ink);
-}
-
-.dock {
-  position: fixed;
-  z-index: 2;
-  top: 1.5rem;
-  right: 1.5rem;
-}
-
-@media (max-width: 48rem) {
-  .dock {
-    top: auto;
-    right: 0;
-    bottom: 0;
-    left: 0;
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+    filter: blur(200px);
   }
-
-  .hero--secondary {
-    padding-bottom: 60dvh;
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
   }
 }
 </style>
